@@ -1,0 +1,4 @@
+openai==0.27.9
+opencv-python==4.8.0.76
+pyzbar==0.1.9
+opencv-python-headless==4.5.3.56
