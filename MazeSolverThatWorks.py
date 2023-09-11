@@ -3,10 +3,10 @@ import RPi.GPIO as GPIO
 
 # On track proximity sensor reading is 1
 # Declare GPIO pins
-SENSOR_1 = 19
-SENSOR_2 = 21
-SENSOR_3 = 23
-SENSOR_4 = 36
+SENSOR_1 = 36
+SENSOR_2 = 23
+SENSOR_3 = 21
+SENSOR_4 = 19
 
 
 MOTOR_RIGHT_ENABLE1 = 33
@@ -19,8 +19,8 @@ MOTOR_LEFT_PIN4 = 18
 
 PWM_CONTROL_RIGHT = None
 PWM_CONTROL_LEFT = None
-SPEED_HIGH = 50
-SPEED_LOW = 40
+SPEED_HIGH = 25
+SPEED_LOW = 15
 
 
 # Left to Right
@@ -29,8 +29,8 @@ S2 = "Two"
 S3 = "Three"
 S4 = "Four"
 
-ADJUSTING_TIME_DELAY = 0.03  # Adjusting movement
-SLEEP_TIME_DELAY = 0.03
+ADJUSTING_TIME_DELAY = 0.08  # Adjusting movement
+SLEEP_TIME_DELAY = 0.1
 INIT_TURN_TIME = 0.06  # Used to turn 45 degrees -ish
 STEPS_FOR_HOME = 6
 
@@ -65,8 +65,8 @@ def setupMotorIO():
     GPIO.setup(MOTOR_LEFT_ENABLE2, GPIO.OUT)
     GPIO.setup(MOTOR_LEFT_PIN3, GPIO.OUT)
     GPIO.setup(MOTOR_LEFT_PIN4, GPIO.OUT)
-    PWM_CONTROL_RIGHT = GPIO.PWM(MOTOR_RIGHT_ENABLE1, 100)  # Initial Freq 100
-    PWM_CONTROL_LEFT = GPIO.PWM(MOTOR_LEFT_ENABLE2, 100)  # Initial Freq 100
+    PWM_CONTROL_RIGHT = GPIO.PWM(MOTOR_RIGHT_ENABLE1, 60)  # Initial Freq 60
+    PWM_CONTROL_LEFT = GPIO.PWM(MOTOR_LEFT_ENABLE2, 60)  # Initial Freq 60
     PWM_CONTROL_LEFT.start(SPEED_HIGH)
     PWM_CONTROL_RIGHT.start(SPEED_HIGH)
 
@@ -98,14 +98,14 @@ def moveRightMotorBackward():
 
 def moveLeftMotorForward():
     GPIO.output(MOTOR_LEFT_ENABLE2, 1)
-    GPIO.output(MOTOR_LEFT_PIN3, 1)
-    GPIO.output(MOTOR_LEFT_PIN4, 0)
+    GPIO.output(MOTOR_LEFT_PIN3, 0)
+    GPIO.output(MOTOR_LEFT_PIN4, 1)
 
 
 def moveLeftMotorBackward():
     GPIO.output(MOTOR_LEFT_ENABLE2, 1)
-    GPIO.output(MOTOR_LEFT_PIN3, 0)
-    GPIO.output(MOTOR_LEFT_PIN4, 1)
+    GPIO.output(MOTOR_LEFT_PIN3, 1)
+    GPIO.output(MOTOR_LEFT_PIN4, 0)
 
 
 def stay_put():
@@ -268,9 +268,9 @@ def adjustOrMoveStraight(sensorVal):
 def decideAction():
     sensorVal = getSensorReadings()
     # map sensorVal to BOT_MOVEMENT
-    if (sensorVal[S2] == 0 and sensorVal[S3] == 1) or (sensorVal[S1] == 0 and sensorVal[S2] == 0 and sensorVal[S3] == 0 and sensorVal[S4] == 1):
+    if (sensorVal[S2] == 0 and sensorVal[S3] == 1) or (sensorVal[S1] == 0 and sensorVal[S2] == 0 and sensorVal[S3] == 0 and sensorVal[S4] == 1) or (sensorVal[S3] == 1 and sensorVal[S4] == 1):
         return "adjust_right"
-    elif (sensorVal[S2] == 1 and sensorVal[S3] == 0) or (sensorVal[S1] == 1 and sensorVal[S2] == 0 and sensorVal[S3] == 0 and sensorVal[S4] == 0):
+    elif (sensorVal[S2] == 1 and sensorVal[S3] == 0) or (sensorVal[S1] == 1 and sensorVal[S2] == 0 and sensorVal[S3] == 0 and sensorVal[S4] == 0) or (sensorVal[S2] == 1 and sensorVal[S1] == 1):
         return "adjust_left"
     elif sensorVal[S1] == 0 and sensorVal[S2] == 0 and sensorVal[S3] == 0 and sensorVal[S4] == 0:
         # Turn left and check
