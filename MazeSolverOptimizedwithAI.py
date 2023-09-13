@@ -19,8 +19,8 @@ MOTOR_LEFT_PIN4 = 18
 
 PWM_CONTROL_RIGHT = None
 PWM_CONTROL_LEFT = None
-SPEED_HIGH = 25
-SPEED_LOW = 15
+SPEED_HIGH = 18
+SPEED_LOW = 10
 
 
 # Left to Right
@@ -29,8 +29,8 @@ S2 = "Two"
 S3 = "Three"
 S4 = "Four"
 
-ADJUSTING_TIME_DELAY = 0.08  # Adjusting movement
-SLEEP_TIME_DELAY = 0.1
+ADJUSTING_TIME_DELAY = 0.03  # Adjusting movement
+SLEEP_TIME_DELAY = 0.05
 INIT_TURN_TIME = 0.06  # Used to turn 45 degrees -ish
 STEPS_FOR_HOME = 6
 
